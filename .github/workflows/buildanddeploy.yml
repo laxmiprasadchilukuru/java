@@ -124,7 +124,7 @@ jobs:
       - name: Deploy to Elastic Beanstalk
         env:
           EB_APPLICATION: streamflix
-          EB_ENVIRONMENT: dev
+          EB_ENVIRONMENT: streamflix-dev
           VERSION_LABEL: streamflix-${{ github.run_id }}-${{ github.run_attempt }}
         run: |
           set -euo pipefail

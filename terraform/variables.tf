@@ -9,8 +9,12 @@ variable "application_name" {
 }
 
 variable "environment_name" {
-  description = "The deployment environment (e.g., dev, staging, prod)"
+  description = "The Elastic Beanstalk environment name (e.g., streamflix-dev)"
   type        = string
+  validation {
+    condition     = length(var.environment_name) >= 4
+    error_message = "The Elastic Beanstalk environment name must contain at least 4 characters."
+  }
 }
 
 variable "instance_type" {
