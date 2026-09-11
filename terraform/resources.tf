@@ -62,10 +62,15 @@ resource "aws_elastic_beanstalk_environment" "streamflix_env" {
   name                = var.environment_name
   application         = aws_elastic_beanstalk_application.streamflix.name
   solution_stack_name = data.aws_elastic_beanstalk_solution_stack.java.name
+  depends_on = [
+    aws_iam_role_policy_attachment.ec2_role_policy_attachment,
+    aws_iam_role_policy_attachment.beanstalk_role_policy_attachment,
+    aws_iam_role_policy_attachment.beanstalk_role_policy_attachment2,
+  ]
   setting {
     namespace = "aws:elasticbeanstalk:environment"
     name      = "EnvironmentType"
-    value     = "singleInstance"
+    value     = "SingleInstance"
 
   }
   setting {
@@ -74,17 +79,17 @@ resource "aws_elastic_beanstalk_environment" "streamflix_env" {
     value     = aws_iam_role.beanstalk_role.arn
   }
   setting {
-    namespace = "aws:elasticbeanstalk:environment"
+    namespace = "aws:autoscaling:launchconfiguration"
     name      = "IamInstanceProfile"
     value     = aws_iam_instance_profile.name.name
   }
   setting {
-    namespace = "aws:elasticbeanstalk:environment"
-    name      = "InstanceType"
+    namespace = "aws:ec2:instances"
+    name      = "InstanceTypes"
     value     = var.instance_type
   }
   setting {
-    namespace = "aws:elasticbeanstalk:environment"
+    namespace = "aws:elasticbeanstalk:application:environment"
     name      = "PORT"
     value     = "8080"
   }
